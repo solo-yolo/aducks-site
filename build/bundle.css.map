@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import { Router } from \"@roxi/routify\";\n  import { routes } from \"../.routify/routes\";\n</script>\n\n<style  global>@import \"https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css\";\n@import url(\"https://fonts.googleapis.com/css2?family=Play&display=swap\");\n:global(body) {\n  font-family: \"Play\", sans-serif;\n}</style>\n\n<Router {routes} />"
+  ],
+  "names": [],
+  "mappings": "AAKe,QAAQ,4DAA4D,CAAC,AACpF,QAAQ,IAAI,4DAA4D,CAAC,CAAC,AAClE,IAAI,AAAE,CAAC,AACb,WAAW,CAAE,MAAM,CAAC,CAAC,UAAU,AACjC,CAAC"
+}
