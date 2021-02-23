@@ -1,0 +1,24 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      API_URL: https://aducks-api.herokuapp.com
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          echo "API_URL=$API_URL" > .env
+          npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.

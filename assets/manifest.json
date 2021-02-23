@@ -1,0 +1,8 @@
+{
+  "background_color": "#ffffff",
+  "theme_color": "#E938C2",
+  "name": "aducks",
+  "short_name": "aducks",
+  "start_url": "/",
+  "display": "standalone"
+}
