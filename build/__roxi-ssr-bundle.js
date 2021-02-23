@@ -33,10 +33,10 @@
     return __exportStar(__defProp(__create(__getProtoOf(module)), "default", {value: module, enumerable: true}), module);
   };
 
-  // dist/build/_fallback-48127026.js
-  var require_fallback_48127026 = __commonJS((exports) => {
+  // dist/build/_fallback-e7bd0c93.js
+  var require_fallback_e7bd0c93 = __commonJS((exports) => {
     __export(exports, {
-      default: () => fallback_48127026_default
+      default: () => fallback_e7bd0c93_default
     });
     const main = __toModule(require_main());
     function h(s2) {
@@ -55,43 +55,43 @@
       let e2;
       return main.g(s2, main.u, (s3) => a2(0, e2 = s3)), [e2];
     }
-    class fallback_48127026_default extends main.S {
+    class fallback_e7bd0c93_default extends main.S {
       constructor(s2) {
         super(), main.i(this, s2, m, h, main.s, {});
       }
     }
   });
 
-  // dist/build/index-966b8bee.js
-  var require_index_966b8bee = __commonJS((exports) => {
+  // dist/build/index-a7be72d3.js
+  var require_index_a7be72d3 = __commonJS((exports) => {
     __export(exports, {
-      default: () => index_966b8bee_default
+      default: () => index_a7be72d3_default
     });
     const main = __toModule(require_main());
-    function c(t2) {
-      let s2;
+    function p(s2) {
+      let i2;
       return {c() {
-        s2 = main.e("p"), s2.textContent = ":P";
-      }, m(t3, n2) {
-        main.c(t3, s2, n2);
-      }, p: main.n, i: main.n, o: main.n, d(t3) {
-        t3 && main.f(s2);
+        i2 = main.e("section"), i2.innerHTML = '<div class="box"><p>yo</p></div>', main.b(i2, "class", "section");
+      }, m(s3, n2) {
+        main.c(s3, i2, n2);
+      }, p: main.n, i: main.n, o: main.n, d(s3) {
+        s3 && main.f(i2);
       }};
     }
-    function p(t2) {
+    function u(s2) {
       return main.m.title = "\u0410\u0443\u0442\u044F\u0442\u0430", main.m.description = "Description coming soon...", [];
     }
-    class index_966b8bee_default extends main.S {
-      constructor(t2) {
-        super(), main.i(this, t2, p, c, main.s, {});
+    class index_a7be72d3_default extends main.S {
+      constructor(s2) {
+        super(), main.i(this, s2, u, p, main.s, {});
       }
     }
   });
 
-  // dist/build/_layout-47635a1c.js
-  var require_layout_47635a1c = __commonJS((exports) => {
+  // dist/build/_layout-eb6a36a4.js
+  var require_layout_eb6a36a4 = __commonJS((exports) => {
     __export(exports, {
-      default: () => layout_47635a1c_default
+      default: () => layout_eb6a36a4_default
     });
     const main = __toModule(require_main());
     function w(n2, a2, s2) {
@@ -183,7 +183,7 @@
         "$$scope" in n3 && s2(0, e2 = n3.$$scope);
       }, [e2, t2];
     }
-    class layout_47635a1c_default extends main.S {
+    class layout_eb6a36a4_default extends main.S {
       constructor(n2) {
         super(), main.i(this, n2, A, z, main.s, {});
       }
@@ -1288,7 +1288,7 @@
       }
     }
     const ve = {...ye, restoreDefaults: ({tree: t2}) => be(t2), assignAPI: we};
-    const Pe = {root: true, ownMeta: {preload: "proximity"}, children: [{isFallback: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/_fallback", component: () => Promise.resolve().then(() => __toModule(require_fallback_48127026())).then((t2) => t2.default)}, {isIndex: true, isPage: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/index", id: "_index", component: () => Promise.resolve().then(() => __toModule(require_index_966b8bee())).then((t2) => t2.default)}], isLayout: true, meta: {preload: "proximity", recursive: true, prerender: true}, path: "/", id: "__layout", component: () => Promise.resolve().then(() => __toModule(require_layout_47635a1c())).then((t2) => t2.default)};
+    const Pe = {root: true, ownMeta: {preload: "proximity"}, children: [{isFallback: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/_fallback", component: () => Promise.resolve().then(() => __toModule(require_fallback_e7bd0c93())).then((t2) => t2.default)}, {isIndex: true, isPage: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/index", id: "_index", component: () => Promise.resolve().then(() => __toModule(require_index_a7be72d3())).then((t2) => t2.default)}], isLayout: true, meta: {preload: "proximity", recursive: true, prerender: true}, path: "/", id: "__layout", component: () => Promise.resolve().then(() => __toModule(require_layout_eb6a36a4())).then((t2) => t2.default)};
     const {tree: ke, routes: Oe} = function(t2) {
       const e2 = ["restoreDefaults", "setParamKeys", "setRegex", "setShortPath", "setRank", "assignLayout", "setPrototype", "addMetaChildren", "assignRelations", "setIsIndexable", "assignIndex", "assignAPI", "createFlatList"], n2 = {tree: t2, routes: []};
       for (let t3 of e2) {
