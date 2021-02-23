@@ -1,2 +1,0 @@
-import{S as s,i,s as n,e as t,b as o,c as e,n as a,f as c,m as r}from"./main.js";function p(s){let i;return{c(){i=t("section"),i.innerHTML='<div class="box"><p>yo</p></div>',o(i,"class","section")},m(s,n){e(s,i,n)},p:a,i:a,o:a,d(s){s&&c(i)}}}function u(s){return r.title="Аутята",r.description="Description coming soon...",[]}export default class extends s{constructor(s){super(),i(this,s,u,p,n,{})}}
-//# sourceMappingURL=index-a7be72d3.js.map
