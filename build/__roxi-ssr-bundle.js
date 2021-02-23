@@ -109,24 +109,24 @@
   }
   const E = [];
   const j = [];
-  const I = [];
   const L = [];
+  const I = [];
   const S = Promise.resolve();
-  let F = false;
-  function N() {
-    F || (F = true, S.then(C));
+  let R = false;
+  function F() {
+    R || (R = true, S.then(C));
   }
-  function R() {
-    return N(), S;
+  function N() {
+    return F(), S;
   }
   function T(t2) {
-    I.push(t2);
+    L.push(t2);
   }
-  let M = false;
-  const A = new Set();
+  let A = false;
+  const M = new Set();
   function C() {
-    if (!M) {
-      M = true;
+    if (!A) {
+      A = true;
       do {
         for (let t2 = 0; t2 < E.length; t2 += 1) {
           const e2 = E[t2];
@@ -134,15 +134,15 @@
         }
         for (_(null), E.length = 0; j.length; )
           j.pop()();
-        for (let t2 = 0; t2 < I.length; t2 += 1) {
-          const e2 = I[t2];
-          A.has(e2) || (A.add(e2), e2());
+        for (let t2 = 0; t2 < L.length; t2 += 1) {
+          const e2 = L[t2];
+          M.has(e2) || (M.add(e2), e2());
         }
-        I.length = 0;
+        L.length = 0;
       } while (E.length);
-      for (; L.length; )
-        L.pop()();
-      F = false, M = false, A.clear();
+      for (; I.length; )
+        I.pop()();
+      R = false, A = false, M.clear();
     }
   }
   function q(t2) {
@@ -229,7 +229,7 @@
     if (p2.ctx = i2 ? i2(e2, n2.props || {}, (t2, n3, ...o2) => {
       const r2 = o2.length ? o2[0] : n3;
       return p2.ctx && a2(p2.ctx[t2], p2.ctx[t2] = r2) && (!p2.skip_bound && p2.bound[t2] && p2.bound[t2](r2), f2 && function(t3, e3) {
-        t3.$$.dirty[0] === -1 && (E.push(t3), N(), t3.$$.dirty.fill(0)), t3.$$.dirty[e3 / 31 | 0] |= 1 << e3 % 31;
+        t3.$$.dirty[0] === -1 && (E.push(t3), F(), t3.$$.dirty.fill(0)), t3.$$.dirty[e3 / 31 | 0] |= 1 << e3 % 31;
       }(e2, t2)), n3;
     }) : [], p2.update(), f2 = true, r(p2.before_update), p2.fragment = !!s2 && s2(p2.ctx), n2.target) {
       if (n2.hydrate) {
@@ -415,13 +415,19 @@
   let $t = dt({component: {params: {}}});
   const yt = dt(null);
   const bt = dt(true);
-  function wt(t2, e2 = false) {
+  async function wt({page: t2, metatags: e2, afterPageLoad: n2}) {
+    const {path: o2} = t2, {options: r2} = st(), i2 = r2.prefetch;
+    for (const e3 of n2._hooks)
+      e3 && await e3(t2.api);
+    e2.update(), dispatchEvent(new CustomEvent("app-loaded")), parent.postMessage({msg: "app-loaded", prefetched: window.routify.prefetched, path: o2, prefetchId: i2}, "*"), window.routify.appLoaded = true, window.routify.stopAutoReady = false;
+  }
+  function xt(t2, e2 = false) {
     t2 = tt.urlTransform.remove(t2);
     let {pathname: n2, search: o2} = at(t2).url;
     const r2 = c(gt), i2 = r2.find((t3) => n2 === t3.meta.name) || r2.find((t3) => n2.match(t3.regex));
     if (!i2)
       throw new Error(`Route could not be found for "${n2}".`);
-    const s2 = e2 ? Object.create(i2) : i2, {route: a2, redirectPath: l2, rewritePath: u2} = xt(s2, r2);
+    const s2 = e2 ? Object.create(i2) : i2, {route: a2, redirectPath: l2, rewritePath: u2} = vt(s2, r2);
     return u2 && ({pathname: n2, search: o2} = at(ct(u2, a2.params)).url, l2 && (a2.redirectTo = ct(l2, a2.params || {}))), tt.queryHandler && (a2.params = Object.assign({}, tt.queryHandler.parse(o2))), function(t3, e3) {
       if (t3.paramKeys) {
         const n3 = function(t4) {
@@ -438,20 +444,20 @@
       }
     }(a2, n2), a2.leftover = t2.replace(new RegExp(a2.regex), ""), a2;
   }
-  function xt(t2, e2, n2, o2) {
+  function vt(t2, e2, n2, o2) {
     const {redirect: r2, rewrite: i2} = t2.meta;
     if (r2 || i2) {
       n2 = r2 ? r2.path || r2 : n2, o2 = i2 ? i2.path || i2 : n2;
       const s2 = r2 && r2.params, a2 = i2 && i2.params, c2 = e2.find((t3) => t3.path === o2);
-      return c2 === t2 && console.error(`${o2} is redirecting to itself`), c2 || console.error(`${t2.path} is redirecting to non-existent path: ${o2}`), (s2 || a2) && (c2.params = Object.assign({}, c2.params, s2, a2)), xt(c2, e2, n2, o2);
+      return c2 === t2 && console.error(`${o2} is redirecting to itself`), c2 || console.error(`${t2.path} is redirecting to non-existent path: ${o2}`), (s2 || a2) && (c2.params = Object.assign({}, c2.params, s2, a2)), vt(c2, e2, n2, o2);
     }
     return {route: t2, redirectPath: n2, rewritePath: o2};
   }
-  function vt(t2, e2, n2) {
+  function _t(t2, e2, n2) {
     const o2 = t2.slice();
     return o2[1] = e2[n2], o2;
   }
-  function _t(t2, e2) {
+  function Pt(t2, e2) {
     let n2, o2;
     return {key: t2, first: null, c() {
       n2 = g("iframe"), n2.src !== (o2 = e2[1].url) && w(n2, "src", o2), w(n2, "frameborder", "0"), w(n2, "title", "routify prefetcher"), this.first = n2;
@@ -463,12 +469,12 @@
       t3 && m(n2);
     }};
   }
-  function Pt(e2) {
+  function kt(e2) {
     let n2, o2 = [], r2 = new Map(), i2 = e2[0];
     const s2 = (t2) => t2[1].options.prefetch;
     for (let t2 = 0; t2 < i2.length; t2 += 1) {
-      let n3 = vt(e2, i2, t2), a2 = s2(n3);
-      r2.set(a2, o2[t2] = _t(a2, n3));
+      let n3 = _t(e2, i2, t2), a2 = s2(n3);
+      r2.set(a2, o2[t2] = Pt(a2, n3));
     }
     return {c() {
       n2 = g("div");
@@ -481,53 +487,57 @@
       for (let t3 = 0; t3 < o2.length; t3 += 1)
         o2[t3].m(n2, null);
     }, p(t2, [e3]) {
-      1 & e3 && (i2 = t2[0], o2 = G(o2, e3, s2, 1, t2, i2, r2, n2, z, _t, null, vt));
+      1 & e3 && (i2 = t2[0], o2 = G(o2, e3, s2, 1, t2, i2, r2, n2, z, Pt, null, _t));
     }, i: t, o: t, d(t2) {
       t2 && m(n2);
       for (let t3 = 0; t3 < o2.length; t3 += 1)
         o2[t3].d();
     }};
   }
-  const kt = dt([]);
-  const Ot = ht(kt, (t2) => t2.slice(0, 2));
-  function Et(t2) {
+  const Ot = dt([]);
+  const Et = ht(Ot, (t2) => t2.slice(0, 2));
+  function jt(t2) {
     const e2 = t2.data ? t2.data.prefetchId : t2;
     if (!e2)
       return null;
-    const n2 = c(kt).find((t3) => t3 && t3.options.prefetch == e2);
+    const n2 = c(Ot).find((t3) => t3 && t3.options.prefetch == e2);
     if (n2) {
       const {gracePeriod: t3} = n2.options, o2 = new Promise((e3) => setTimeout(e3, t3)), r2 = new Promise((e3) => {
         window.requestIdleCallback ? window.requestIdleCallback(e3) : setTimeout(e3, t3 + 1e3);
       });
       Promise.all([o2, r2]).then(() => {
-        kt.update((t4) => t4.filter((t5) => t5.options.prefetch != e2));
+        Ot.update((t4) => t4.filter((t5) => t5.options.prefetch != e2));
       });
     }
   }
-  function jt(t2, e2, n2) {
+  function Lt(t2, e2, n2) {
     let o2;
-    return l(t2, Ot, (t3) => n2(0, o2 = t3)), [o2];
+    return l(t2, Et, (t3) => n2(0, o2 = t3)), [o2];
   }
-  Ot.subscribe((t2) => t2.forEach(({options: t3}) => {
-    setTimeout(() => Et(t3.prefetch), t3.timeout);
-  })), addEventListener("message", Et, false);
+  Et.subscribe((t2) => t2.forEach(({options: t3}) => {
+    setTimeout(() => jt(t3.prefetch), t3.timeout);
+  })), addEventListener("message", jt, false);
   class It extends Y {
     constructor(t2) {
-      super(), X(this, t2, jt, Pt, s, {});
+      super(), X(this, t2, Lt, kt, s, {});
     }
   }
-  function Lt() {
+  function St() {
     return O("routify") || $t;
   }
-  const St = {_hooks: [(t2) => bt.set(false)], subscribe: Nt};
-  const Ft = {_hooks: [], subscribe: Nt};
-  function Nt(t2) {
+  const Rt = {subscribe: (t2) => (window.routify.stopAutoReady = true, t2(async function() {
+    await N(), await wt({page: c(mt), metatags: qt, afterPageLoad: Ft});
+  }), () => {
+  })};
+  const Ft = {_hooks: [(t2) => bt.set(false)], subscribe: Tt};
+  const Nt = {_hooks: [], subscribe: Tt};
+  function Tt(t2) {
     const e2 = this._hooks, n2 = e2.length;
     return t2((t3) => {
       e2[n2] = t3;
     }), () => delete e2[n2];
   }
-  const Rt = {subscribe: (t2) => ht([Lt(), mt, gt], (t3) => function(t4, e2, n2) {
+  const At = {subscribe: (t2) => ht([St(), mt, gt], (t3) => function(t4, e2, n2) {
     return function(o2, r2 = {}, i2) {
       const {component: s2} = t4, a2 = Object.assign({}, e2.params, s2.params);
       let c2 = o2 && o2.nodeType && o2;
@@ -559,15 +569,15 @@
       }
     };
   }(...t3)).subscribe(t2)};
-  const Tt = {subscribe: (t2) => ht([Rt, mt], ([t3, e2]) => function(n2 = "", o2 = {}, {strict: r2} = {strict: true}) {
+  const Mt = {subscribe: (t2) => ht([At, mt], ([t3, e2]) => function(n2 = "", o2 = {}, {strict: r2} = {strict: true}) {
     n2 = t3(n2, o2, {strict: r2});
     const i2 = t3(e2.path, null, {strict: r2}), s2 = new RegExp("^" + n2 + "($|/)");
     return !!i2.match(s2);
   }).subscribe(t2)};
-  const Mt = {props: {}, templates: {}, services: {plain: {propField: "name", valueField: "content"}, twitter: {propField: "name", valueField: "content"}, og: {propField: "property", valueField: "content"}}, plugins: [{name: "applyTemplate", condition: () => true, action: (t2, e2) => [t2, (Mt.getLongest(Mt.templates, t2) || ((t3) => t3))(e2)]}, {name: "createMeta", condition: () => true, action(t2, e2) {
-    Mt.writeMeta(t2, e2);
+  const Ct = {props: {}, templates: {}, services: {plain: {propField: "name", valueField: "content"}, twitter: {propField: "name", valueField: "content"}, og: {propField: "property", valueField: "content"}}, plugins: [{name: "applyTemplate", condition: () => true, action: (t2, e2) => [t2, (Ct.getLongest(Ct.templates, t2) || ((t3) => t3))(e2)]}, {name: "createMeta", condition: () => true, action(t2, e2) {
+    Ct.writeMeta(t2, e2);
   }}, {name: "createOG", condition: (t2) => !t2.match(":"), action(t2, e2) {
-    Mt.writeMeta(`og:${t2}`, e2);
+    Ct.writeMeta(`og:${t2}`, e2);
   }}, {name: "createTitle", condition: (t2) => t2 === "title", action(t2, e2) {
     document.title = e2;
   }}], getLongest(t2, e2) {
@@ -577,51 +587,51 @@
       return n2[Object.keys(t2[e2]).filter((t3) => o2.includes(t3)).sort((t3, e3) => e3.length - t3.length)[0]];
     }
   }, writeMeta(t2, e2) {
-    const n2 = document.getElementsByTagName("head")[0], o2 = t2.match(/(.+)\:/), r2 = o2 && o2[1] || "plain", {propField: i2, valueField: s2} = At.services[r2] || At.services.plain, a2 = document.querySelector(`meta[${i2}='${t2}']`);
+    const n2 = document.getElementsByTagName("head")[0], o2 = t2.match(/(.+)\:/), r2 = o2 && o2[1] || "plain", {propField: i2, valueField: s2} = qt.services[r2] || qt.services.plain, a2 = document.querySelector(`meta[${i2}='${t2}']`);
     a2 && a2.remove();
     const c2 = document.createElement("meta");
     c2.setAttribute(i2, t2), c2.setAttribute(s2, e2), c2.setAttribute("data-origin", "routify"), n2.appendChild(c2);
   }, set(t2, e2) {
-    Mt.plugins.forEach((n2) => {
+    Ct.plugins.forEach((n2) => {
       n2.condition(t2, e2) && ([t2, e2] = n2.action(t2, e2) || [t2, e2]);
     });
   }, clear() {
     const t2 = document.querySelector("meta");
     t2 && t2.remove();
   }, template(t2, e2) {
-    const n2 = Mt.getOrigin();
-    Mt.templates[t2] = Mt.templates[t2] || {}, Mt.templates[t2][n2] = e2;
+    const n2 = Ct.getOrigin();
+    Ct.templates[t2] = Ct.templates[t2] || {}, Ct.templates[t2][n2] = e2;
   }, update() {
-    Object.keys(Mt.props).forEach((t2) => {
-      let e2 = Mt.getLongest(Mt.props, t2);
-      Mt.plugins.forEach((n2) => {
+    Object.keys(Ct.props).forEach((t2) => {
+      let e2 = Ct.getLongest(Ct.props, t2);
+      Ct.plugins.forEach((n2) => {
         n2.condition(t2, e2) && ([t2, e2] = n2.action(t2, e2) || [t2, e2]);
       });
     });
   }, batchedUpdate() {
-    Mt._pendingUpdate || (Mt._pendingUpdate = true, setTimeout(() => {
-      Mt._pendingUpdate = false, this.update();
+    Ct._pendingUpdate || (Ct._pendingUpdate = true, setTimeout(() => {
+      Ct._pendingUpdate = false, this.update();
     }));
   }, _updateQueued: false, getOrigin() {
-    const t2 = Lt();
+    const t2 = St();
     return t2 && c(t2).path || "/";
   }, _pendingUpdate: false};
-  const At = new Proxy(Mt, {set(t2, e2, n2, o2) {
+  const qt = new Proxy(Ct, {set(t2, e2, n2, o2) {
     const {props: r2, getOrigin: i2} = t2;
     return Reflect.has(t2, e2) ? Reflect.set(t2, e2, n2, o2) : (r2[e2] = r2[e2] || {}, r2[e2][i2()] = n2), window.routify.appLoaded && t2.batchedUpdate(), true;
   }});
-  function Ct(t2, e2, n2) {
+  function Bt(t2, e2, n2) {
     const o2 = t2.slice();
     return o2[18] = e2[n2].component, o2[19] = e2[n2].componentFile, o2[2] = e2[n2].decorator, o2[1] = e2[n2].nodes, o2;
   }
-  function qt(t2) {
+  function Ut(t2) {
     let e2, n2, o2 = [], r2 = new Map(), i2 = [t2[4]];
     const s2 = (t3) => function({meta: t4, path: e3, param: n3, params: o3}) {
       return JSON.stringify({path: e3, param: (t4["param-is-page"] || t4["slug-is-page"]) && n3, queryParams: t4["query-params-is-page"] && o3});
     }(t3[18]);
     for (let e3 = 0; e3 < 1; e3 += 1) {
-      let n3 = Ct(t2, i2, e3), a2 = s2(n3);
-      r2.set(a2, o2[e3] = Kt(a2, n3));
+      let n3 = Bt(t2, i2, e3), a2 = s2(n3);
+      r2.set(a2, o2[e3] = Jt(a2, n3));
     }
     return {c() {
       for (let t3 = 0; t3 < 1; t3 += 1)
@@ -632,7 +642,7 @@
         o2[e3].m(t3, r3);
       h(t3, e2, r3), n2 = true;
     }, p(t3, n3) {
-      4194365 & n3 && (i2 = [t3[4]], H(), o2 = G(o2, n3, s2, 1, t3, i2, r2, e2.parentNode, W, Kt, e2, Ct), K());
+      4194365 & n3 && (i2 = [t3[4]], H(), o2 = G(o2, n3, s2, 1, t3, i2, r2, e2.parentNode, W, Jt, e2, Bt), K());
     }, i(t3) {
       if (!n2) {
         for (let t4 = 0; t4 < 1; t4 += 1)
@@ -649,9 +659,9 @@
       t3 && m(e2);
     }};
   }
-  function Bt(t2) {
+  function Ht(t2) {
     let e2, n2;
-    return e2 = new zt({props: {decorator: t2[2], nodes: [...t2[1]], scoped: {...t2[0], ...t2[22]}}}), {c() {
+    return e2 = new Gt({props: {decorator: t2[2], nodes: [...t2[1]], scoped: {...t2[0], ...t2[22]}}}), {c() {
       Q(e2.$$.fragment);
     }, m(t3, o2) {
       V(e2, t3, o2), n2 = true;
@@ -666,14 +676,14 @@
       Z(e2, t3);
     }};
   }
-  function Ut(t2) {
-    let e2, n2, o2 = t2[18] && t2[1].length && Bt(t2);
+  function Kt(t2) {
+    let e2, n2, o2 = t2[18] && t2[1].length && Ht(t2);
     return {c() {
       o2 && o2.c(), e2 = b();
     }, m(t3, r2) {
       o2 && o2.m(t3, r2), h(t3, e2, r2), n2 = true;
     }, p(t3, n3) {
-      t3[18] && t3[1].length ? o2 ? (o2.p(t3, n3), 16 & n3 && D(o2, 1)) : (o2 = Bt(t3), o2.c(), D(o2, 1), o2.m(e2.parentNode, e2)) : o2 && (H(), J(o2, 1, 1, () => {
+      t3[18] && t3[1].length ? o2 ? (o2.p(t3, n3), 16 & n3 && D(o2, 1)) : (o2 = Ht(t3), o2.c(), D(o2, 1), o2.m(e2.parentNode, e2)) : o2 && (H(), J(o2, 1, 1, () => {
         o2 = null;
       }), K());
     }, i(t3) {
@@ -684,12 +694,12 @@
       o2 && o2.d(t3), t3 && m(e2);
     }};
   }
-  function Ht(t2) {
+  function Dt(t2) {
     let n2, o2, r2;
     const i2 = [{scoped: t2[0]}, {scopedSync: t2[5]}, t2[3].param || {}];
     var s2 = t2[19];
     function a2(t3) {
-      let n3 = {$$slots: {default: [Ut, ({scoped: t4, decorator: e2}) => ({22: t4, 2: e2}), ({scoped: t4, decorator: e2}) => (t4 ? 4194304 : 0) | (e2 ? 4 : 0)]}, $$scope: {ctx: t3}};
+      let n3 = {$$slots: {default: [Kt, ({scoped: t4, decorator: e2}) => ({22: t4, 2: e2}), ({scoped: t4, decorator: e2}) => (t4 ? 4194304 : 0) | (e2 ? 4 : 0)]}, $$scope: {ctx: t3}};
       for (let t4 = 0; t4 < i2.length; t4 += 1)
         n3 = e(n3, i2[t4]);
       return {props: n3};
@@ -738,11 +748,11 @@
       n2 && Z(n2, t3), t3 && m(o2);
     }};
   }
-  function Kt(t2, e2) {
+  function Jt(t2, e2) {
     let n2, o2, r2, i2;
     var s2 = e2[2];
     function a2(t3) {
-      return {props: {scoped: t3[0], $$slots: {default: [Ht]}, $$scope: {ctx: t3}}};
+      return {props: {scoped: t3[0], $$slots: {default: [Dt]}, $$scope: {ctx: t3}}};
     }
     return s2 && (o2 = new s2(a2(e2))), {key: t2, first: null, c() {
       n2 = b(), o2 && Q(o2.$$.fragment), r2 = b(), this.first = n2;
@@ -770,15 +780,15 @@
       t3 && m(n2), t3 && m(r2), o2 && Z(o2, t3);
     }};
   }
-  function Dt(e2) {
-    let n2, o2, r2, s2, a2, c2 = e2[4] && qt(e2);
+  function zt(e2) {
+    let n2, o2, r2, s2, a2, c2 = e2[4] && Ut(e2);
     return {c() {
       c2 && c2.c(), n2 = y(), o2 = g("span");
     }, m(l2, u2) {
       var p2;
       c2 && c2.m(l2, u2), h(l2, n2, u2), h(l2, o2, u2), r2 = true, s2 || (p2 = e2[8].call(null, o2), a2 = p2 && i(p2.destroy) ? p2.destroy : t, s2 = true);
     }, p(t2, [e3]) {
-      t2[4] ? c2 ? (c2.p(t2, e3), 16 & e3 && D(c2, 1)) : (c2 = qt(t2), c2.c(), D(c2, 1), c2.m(n2.parentNode, n2)) : c2 && (H(), J(c2, 1, 1, () => {
+      t2[4] ? c2 ? (c2.p(t2, e3), 16 & e3 && D(c2, 1)) : (c2 = Ut(t2), c2.c(), D(c2, 1), c2.m(n2.parentNode, n2)) : c2 && (H(), J(c2, 1, 1, () => {
         c2 = null;
       }), K());
     }, i(t2) {
@@ -789,7 +799,7 @@
       c2 && c2.d(t2), t2 && m(n2), t2 && m(o2), s2 = false, a2();
     }};
   }
-  function Jt(t2, e2, n2) {
+  function Wt(t2, e2, n2) {
     let o2, r2, i2, s2, a2;
     l(t2, $t, (t3) => n2(10, i2 = t3)), l(t2, mt, (t3) => n2(14, s2 = t3));
     let c2, {nodes: u2 = []} = e2, {scoped: p2 = {}} = e2, {decorator: f2} = e2, d2 = null, h2 = null, m2 = {};
@@ -799,14 +809,9 @@
     l(t2, $2, (t3) => n2(9, r2 = t3));
     function y2(t3) {
       n2(5, m2 = {...p2}), h2.length === 0 && async function() {
-        await R(), nt(c2);
+        await N(), nt(c2);
         const t4 = a2.component.path === s2.path;
-        !window.routify.stopAutoReady && t4 && async function({page: t5, metatags: e4, afterPageLoad: n3}) {
-          const {path: o3} = t5, {options: r3} = st(), i3 = r3.prefetch;
-          for (const e5 of n3._hooks)
-            e5 && await e5(t5.api);
-          e4.update(), dispatchEvent(new CustomEvent("app-loaded")), parent.postMessage({msg: "app-loaded", prefetched: window.routify.prefetched, path: o3, prefetchId: i3}, "*"), window.routify.appLoaded = true, window.routify.stopAutoReady = false;
-        }({page: a2.component, metatags: At, afterPageLoad: St});
+        !window.routify.stopAutoReady && t4 && wt({page: a2.component, metatags: qt, afterPageLoad: Ft});
       }();
       const e3 = {nodes: h2, decorator: f2 || pt, layout: d2.isLayout ? d2 : o2.layout, component: d2, route: s2, componentFile: t3, parentNode: c2 || o2.parentNode};
       g2.set(e3);
@@ -817,20 +822,20 @@
       1536 & t2.$$.dirty && (o2 = r2 || i2), 2 & t2.$$.dirty && n2(3, [d2, ...h2] = u2, d2), 8 & t2.$$.dirty && function(t3) {
         let e3 = t3.component();
         e3 instanceof Promise ? e3.then(y2) : y2(e3);
-      }(d2), 16 & t2.$$.dirty && a2 && it(a2, R);
+      }(d2), 16 & t2.$$.dirty && a2 && it(a2, N);
     }, [p2, u2, f2, d2, a2, m2, g2, $2, (t3) => c2 = t3.parentNode, r2, i2];
   }
-  class zt extends Y {
+  class Gt extends Y {
     constructor(t2) {
-      super(), X(this, t2, Jt, Dt, s, {nodes: 1, scoped: 0, decorator: 2});
+      super(), X(this, t2, Wt, zt, s, {nodes: 1, scoped: 0, decorator: 2});
     }
   }
-  function Wt(t2, e2) {
+  function Qt(t2, e2) {
     let n2 = false;
     function o2(o3, r3) {
-      const i2 = wt(o3 || st().fullpath);
+      const i2 = xt(o3 || st().fullpath);
       i2.redirectTo && (history.replaceStateNative({}, null, i2.redirectTo), delete i2.redirectTo);
-      const s2 = [...(r3 && wt(st().fullpath, t2) || i2).layouts, i2];
+      const s2 = [...(r3 && xt(st().fullpath, t2) || i2).layouts, i2];
       n2 && delete n2.last, i2.last = n2, n2 = i2, o3 || yt.set(i2), mt.set(i2), i2.api.preload().then(() => {
         bt.set(true), e2(s2);
       });
@@ -844,12 +849,12 @@
           e4 = {id: r3, path: i2, params: s2, ...e4};
           const a2 = new Event(t4.toLowerCase());
           Object.assign(a2, {state: e4, title: n4, url: o3});
-          return await Qt(a2, o3) ? (history[t4 + "Native"].apply(this, [e4, n4, o3]), dispatchEvent(a2)) : void 0;
+          return await Zt(a2, o3) ? (history[t4 + "Native"].apply(this, [e4, n4, o3]), dispatchEvent(a2)) : void 0;
         };
       });
       let e3 = false;
-      const n3 = {click: Gt, pushstate: () => t3(), replacestate: () => t3(), popstate: async (n4) => {
-        e3 ? e3 = false : await Qt(n4, st().fullpath) ? t3() : (e3 = true, n4.preventDefault(), history.go(1));
+      const n3 = {click: Vt, pushstate: () => t3(), replacestate: () => t3(), popstate: async (n4) => {
+        e3 ? e3 = false : await Zt(n4, st().fullpath) ? t3() : (e3 = true, n4.preventDefault(), history.go(1));
       }};
       Object.entries(n3).forEach((t4) => addEventListener(...t4));
       return () => {
@@ -858,7 +863,7 @@
     }(o2);
     return {updatePage: o2, destroy: r2};
   }
-  function Gt(t2) {
+  function Vt(t2) {
     const e2 = t2.target.closest("a"), n2 = e2 && e2.href;
     if (t2.ctrlKey || t2.metaKey || t2.altKey || t2.shiftKey || t2.button || t2.defaultPrevented)
       return;
@@ -867,17 +872,17 @@
     const o2 = new URL(n2), r2 = o2.pathname + o2.search + o2.hash;
     t2.preventDefault(), history.pushState({}, "", r2);
   }
-  async function Qt(t2, e2) {
-    const n2 = wt(e2).api;
-    for (const o2 of Ft._hooks.filter(Boolean)) {
+  async function Zt(t2, e2) {
+    const n2 = xt(e2).api;
+    for (const o2 of Nt._hooks.filter(Boolean)) {
       if (!await o2(t2, n2, {url: e2}))
         return false;
     }
     return true;
   }
-  function Vt(t2) {
+  function Xt(t2) {
     let e2, n2;
-    return e2 = new zt({props: {nodes: t2[0]}}), {c() {
+    return e2 = new Gt({props: {nodes: t2[0]}}), {c() {
       Q(e2.$$.fragment);
     }, m(t3, o2) {
       V(e2, t3, o2), n2 = true;
@@ -892,14 +897,14 @@
       Z(e2, t3);
     }};
   }
-  function Zt(t2) {
-    let e2, n2, o2, r2 = t2[0] && t2[1] !== null && Vt(t2);
+  function Yt(t2) {
+    let e2, n2, o2, r2 = t2[0] && t2[1] !== null && Xt(t2);
     return n2 = new It({}), {c() {
       r2 && r2.c(), e2 = y(), Q(n2.$$.fragment);
     }, m(t3, i2) {
       r2 && r2.m(t3, i2), h(t3, e2, i2), V(n2, t3, i2), o2 = true;
     }, p(t3, [n3]) {
-      t3[0] && t3[1] !== null ? r2 ? (r2.p(t3, n3), 3 & n3 && D(r2, 1)) : (r2 = Vt(t3), r2.c(), D(r2, 1), r2.m(e2.parentNode, e2)) : r2 && (H(), J(r2, 1, 1, () => {
+      t3[0] && t3[1] !== null ? r2 ? (r2.p(t3, n3), 3 & n3 && D(r2, 1)) : (r2 = Xt(t3), r2.c(), D(r2, 1), r2.m(e2.parentNode, e2)) : r2 && (H(), J(r2, 1, 1, () => {
         r2 = null;
       }), K());
     }, i(t3) {
@@ -910,7 +915,7 @@
       r2 && r2.d(t3), t3 && m(e2), Z(n2, t3);
     }};
   }
-  function Xt(t2, e2, n2) {
+  function te(t2, e2, n2) {
     let o2;
     l(t2, mt, (t3) => n2(1, o2 = t3));
     let r2, i2, {routes: s2} = e2, {config: a2 = {}} = e2;
@@ -925,115 +930,115 @@
       "routes" in t3 && n2(2, s2 = t3.routes), "config" in t3 && n2(3, a2 = t3.config);
     }, t2.$$.update = () => {
       4 & t2.$$.dirty && s2 && (clearTimeout(p2), p2 = setTimeout(() => {
-        u2(), i2 = Wt(s2, c2), gt.set(s2), i2.updatePage();
+        u2(), i2 = Qt(s2, c2), gt.set(s2), i2.updatePage();
       }));
     }, [r2, o2, s2, a2];
   }
-  class Yt extends Y {
+  class ee extends Y {
     constructor(t2) {
-      super(), X(this, t2, Xt, Zt, s, {routes: 2, config: 3});
+      super(), X(this, t2, te, Yt, s, {routes: 2, config: 3});
     }
   }
-  function te(t2) {
+  function ne(t2) {
     const e2 = async function(e3) {
-      return await ee(t2, {file: e3.tree, state: {treePayload: e3}, scope: {}});
+      return await oe(t2, {file: e3.tree, state: {treePayload: e3}, scope: {}});
     };
     return e2.sync = function(e3) {
-      return ne(t2, {file: e3.tree, state: {treePayload: e3}, scope: {}});
+      return re(t2, {file: e3.tree, state: {treePayload: e3}, scope: {}});
     }, e2;
   }
-  async function ee(t2, e2) {
+  async function oe(t2, e2) {
     const n2 = await t2(e2);
     if (n2 === false)
       return false;
     const o2 = n2 || e2.file;
     if (o2.children) {
-      const n3 = await Promise.all(o2.children.map(async (n4) => ee(t2, {state: e2.state, scope: oe(e2.scope || {}), parent: e2.file, file: await n4})));
+      const n3 = await Promise.all(o2.children.map(async (n4) => oe(t2, {state: e2.state, scope: ie(e2.scope || {}), parent: e2.file, file: await n4})));
       o2.children = n3.filter(Boolean);
     }
     return o2;
   }
-  function ne(t2, e2) {
+  function re(t2, e2) {
     const n2 = t2(e2);
     if (n2 === false)
       return false;
     const o2 = n2 || e2.file;
     if (o2.children) {
-      const n3 = o2.children.map((n4) => ne(t2, {state: e2.state, scope: oe(e2.scope || {}), parent: e2.file, file: n4}));
+      const n3 = o2.children.map((n4) => re(t2, {state: e2.state, scope: ie(e2.scope || {}), parent: e2.file, file: n4}));
       o2.children = n3.filter(Boolean);
     }
     return o2;
   }
-  function oe(t2) {
+  function ie(t2) {
     return JSON.parse(JSON.stringify(t2));
   }
-  const re = te(({file: t2}) => {
+  const se = ne(({file: t2}) => {
     (t2.isPage || t2.isFallback) && (t2.regex = ((t3, e2) => {
       const n2 = e2 ? "" : "/?$";
       return `^${t3 = (t3 = (t3 = t3.replace(/\/_fallback?$/, "(/|$)")).replace(/\/index$/, "(/index)?")).replace(et, "([^/]+)") + n2}`;
     })(t2.path, t2.isFallback));
   });
-  const ie = te(({file: t2}) => {
+  const ae = ne(({file: t2}) => {
     t2.paramKeys = rt(t2.path);
   });
-  const se = te(({file: t2}) => {
+  const ce = ne(({file: t2}) => {
     t2.isFallback || t2.isIndex ? t2.shortPath = t2.path.replace(/\/[^/]+$/, "") : t2.shortPath = t2.path;
   });
-  const ae = te(({file: t2}) => {
+  const le = ne(({file: t2}) => {
     t2.ranking = (({path: t3}) => t3.split("/").filter(Boolean).map((t4) => t4 === "_fallback" ? "A" : t4.startsWith(":") ? "B" : "C").join(""))(t2);
   });
-  const ce = te(({file: t2}) => {
+  const ue = ne(({file: t2}) => {
     const e2 = t2, n2 = t2.meta && t2.meta.children || [];
     n2.length && (e2.children = e2.children || [], e2.children.push(...n2.map((t3) => ({isMeta: true, ...t3, meta: t3}))));
   });
-  const le = te((t2) => {
+  const pe = ne((t2) => {
     const {file: e2} = t2, {isFallback: n2, meta: o2} = e2, r2 = e2.path.match("/:"), i2 = e2.path.endsWith("/index"), s2 = o2.index || o2.index === 0, a2 = o2.index === false;
     e2.isIndexable = s2 || !n2 && !r2 && !i2 && !a2, e2.isNonIndexable = !e2.isIndexable;
   });
-  const ue = te(({file: t2, parent: e2}) => {
-    Object.defineProperty(t2, "parent", {get: () => e2}), Object.defineProperty(t2, "nextSibling", {get: () => fe(t2, 1)}), Object.defineProperty(t2, "prevSibling", {get: () => fe(t2, -1)}), Object.defineProperty(t2, "lineage", {get: () => pe(e2)});
+  const fe = ne(({file: t2, parent: e2}) => {
+    Object.defineProperty(t2, "parent", {get: () => e2}), Object.defineProperty(t2, "nextSibling", {get: () => he(t2, 1)}), Object.defineProperty(t2, "prevSibling", {get: () => he(t2, -1)}), Object.defineProperty(t2, "lineage", {get: () => de(e2)});
   });
-  function pe(t2, e2 = []) {
-    return t2 && (e2.unshift(t2), pe(t2.parent, e2)), e2;
+  function de(t2, e2 = []) {
+    return t2 && (e2.unshift(t2), de(t2.parent, e2)), e2;
   }
-  function fe(t2, e2) {
+  function he(t2, e2) {
     if (!t2.root) {
       const n2 = t2.parent.children.filter((t3) => t3.isIndexable), o2 = n2.indexOf(t2);
       return n2[o2 + e2];
     }
   }
-  const de = te(({file: t2, parent: e2}) => {
+  const me = ne(({file: t2, parent: e2}) => {
     t2.isIndex && Object.defineProperty(e2, "index", {get: () => t2});
   });
-  const he = te(({file: t2, scope: e2}) => {
+  const ge = ne(({file: t2, scope: e2}) => {
     function n2(t3) {
       const {parent: e3} = t3, o2 = e3 && e3.component && e3, r2 = o2 && o2.isReset, i2 = e3 && !r2 && n2(e3) || [];
       return o2 && i2.push(o2), i2;
     }
     Object.defineProperty(t2, "layouts", {get: () => n2(t2)});
   });
-  const me = te(({file: t2}) => {
+  const $e = ne(({file: t2}) => {
     const e2 = t2.root ? function() {
     } : t2.children ? (t2.isPage, function() {
     }) : (t2.isReset || t2.isLayout || t2.isFallback, function() {
     });
     Object.setPrototypeOf(t2, e2.prototype);
   });
-  var ge = Object.freeze({__proto__: null, setRegex: re, setParamKeys: ie, setShortPath: se, setRank: ae, addMetaChildren: ce, setIsIndexable: le, assignRelations: ue, assignIndex: de, assignLayout: he, createFlatList: (t2) => {
-    te((t3) => {
+  var ye = Object.freeze({__proto__: null, setRegex: se, setParamKeys: ae, setShortPath: ce, setRank: le, addMetaChildren: ue, setIsIndexable: pe, assignRelations: fe, assignIndex: me, assignLayout: ge, createFlatList: (t2) => {
+    ne((t3) => {
       (t3.file.isPage || t3.file.isFallback) && t3.state.treePayload.routes.push(t3.file);
     }).sync(t2), t2.routes.sort((t3, e2) => t3.ranking >= e2.ranking ? -1 : 1);
-  }, setPrototype: me});
-  const $e = {isDir: false, ext: "svelte", isLayout: false, isReset: false, isIndex: false, isFallback: false, isPage: false, ownMeta: {}, meta: {recursive: true, preload: false, prerender: true}, id: "__fallback"};
-  function ye(t2) {
-    return Object.entries($e).forEach(([e2, n2]) => {
+  }, setPrototype: $e});
+  const be = {isDir: false, ext: "svelte", isLayout: false, isReset: false, isIndex: false, isFallback: false, isPage: false, ownMeta: {}, meta: {recursive: true, preload: false, prerender: true}, id: "__fallback"};
+  function we(t2) {
+    return Object.entries(be).forEach(([e2, n2]) => {
       t2[e2] === void 0 && (t2[e2] = n2);
-    }), t2.children && (t2.children = t2.children.map(ye)), t2;
+    }), t2.children && (t2.children = t2.children.map(we)), t2;
   }
-  const be = te(({file: t2}) => {
-    t2.api = new we(t2);
+  const xe = ne(({file: t2}) => {
+    t2.api = new ve(t2);
   });
-  class we {
+  class ve {
     constructor(t2) {
       this.__file = t2, Object.defineProperty(this, "__file", {enumerable: false}), this.isMeta = !!t2.isMeta, this.path = t2.path, this.title = function(t3) {
         return t3.meta.title !== void 0 ? t3.meta.title : (t3.shortPath || t3.path).split("/").pop().replace(/-/g, " ");
@@ -1046,10 +1051,10 @@
       return (this.__file.children || this.__file.isLayout && this.__file.parent.children || []).filter((t2) => !t2.isNonIndexable).sort((t2, e2) => t2.isMeta && e2.isMeta ? 0 : (t2 = (t2.meta.index || t2.meta.title || t2.path).toString(), e2 = (e2.meta.index || e2.meta.title || e2.path).toString(), t2.localeCompare(e2, void 0, {numeric: true, sensitivity: "base"}))).map(({api: t2}) => t2);
     }
     get next() {
-      return xe(this, 1);
+      return _e(this, 1);
     }
     get prev() {
-      return xe(this, -1);
+      return _e(this, -1);
     }
     async preload() {
       const t2 = [...this.__file.layouts, this.__file].map((t3) => t3.component());
@@ -1059,14 +1064,14 @@
       return this.__file.component ? this.__file.component() : !!this.__file.index && this.__file.index.component();
     }
   }
-  function xe(t2, e2) {
+  function _e(t2, e2) {
     if (!t2.__file.root) {
       const n2 = t2.parent.children.indexOf(t2);
       return t2.parent.children[n2 + e2];
     }
   }
-  const ve = {...ge, restoreDefaults: ({tree: t2}) => ye(t2), assignAPI: be};
-  function _e(e2) {
+  const Pe = {...ye, restoreDefaults: ({tree: t2}) => we(t2), assignAPI: xe};
+  function ke(e2) {
     let n2, o2, r2, i2, s2, a2, c2, l2, u2;
     return {c() {
       n2 = g("section"), o2 = g("div"), r2 = g("p"), r2.textContent = "404", i2 = y(), s2 = g("p"), a2 = $("Page not found.\n      "), c2 = g("a"), l2 = $("Go back"), w(r2, "class", "title"), w(c2, "href", u2 = e2[0]("../")), w(s2, "class", "subtitle"), w(o2, "class", "hero-body"), w(n2, "class", "hero is-medium has-text-centered");
@@ -1078,16 +1083,16 @@
       t2 && m(n2);
     }};
   }
-  function Pe(t2, e2, n2) {
+  function Oe(t2, e2, n2) {
     let o2;
-    return l(t2, Rt, (t3) => n2(0, o2 = t3)), [o2];
+    return l(t2, At, (t3) => n2(0, o2 = t3)), [o2];
   }
-  class ke extends Y {
+  class Ee extends Y {
     constructor(t2) {
-      super(), X(this, t2, Pe, _e, s, {});
+      super(), X(this, t2, Oe, ke, s, {});
     }
   }
-  function Oe(e2) {
+  function je(e2) {
     let n2, o2, r2, i2, s2, a2, c2, l2, u2 = e2[0].message + "";
     return {c() {
       n2 = g("section"), o2 = g("div"), r2 = g("p"), r2.textContent = "yo", i2 = y(), s2 = g("p"), a2 = $(u2), c2 = $(" from "), l2 = $(e2[1]), w(o2, "class", "box"), w(n2, "class", "section");
@@ -1101,24 +1106,26 @@
       t2 && m(n2);
     }};
   }
-  function Ee(t2, e2, n2) {
-    const o2 = "http://aducks-api.herokuapp.com/";
-    At.title = "\u0410\u0443\u0442\u044F\u0442\u0430", At.description = "Description coming soon...";
-    let r2 = {};
-    return console.log(`api url: ${o2}`), fetch(o2 + "/foo").then((t3) => t3.json()).then((t3) => {
-      n2(0, r2 = t3);
-    }), [r2, o2];
+  function Le(t2, e2, n2) {
+    let o2;
+    l(t2, Rt, (t3) => n2(3, o2 = t3));
+    const r2 = "http://aducks-api.herokuapp.com";
+    qt.title = "\u0410\u0443\u0442\u044F\u0442\u0430", qt.description = "Description coming soon...";
+    let i2 = {};
+    return console.log(`api url: ${r2}`), fetch(r2 + "/foo").then((t3) => t3.json()).then((t3) => {
+      n2(0, i2 = t3);
+    }).then(o2), [i2, r2];
   }
-  class je extends Y {
+  class Ie extends Y {
     constructor(t2) {
-      super(), X(this, t2, Ee, Oe, s, {});
+      super(), X(this, t2, Le, je, s, {});
     }
   }
-  function Ie(t2, e2, n2) {
+  function Se(t2, e2, n2) {
     const o2 = t2.slice();
     return o2[4] = e2[n2][0], o2[5] = e2[n2][1], o2;
   }
-  function Le(t2) {
+  function Re(t2) {
     let e2, n2, o2, r2, i2 = t2[4] + "";
     return {c() {
       e2 = g("a"), n2 = $(i2), o2 = y(), w(e2, "class", "navbar-item"), w(e2, "href", r2 = t2[0](t2[5])), x(e2, "is-active", t2[1](t2[5]));
@@ -1130,11 +1137,11 @@
       t3 && m(e2);
     }};
   }
-  function Se(e2) {
+  function Fe(e2) {
     let n2, o2, r2, i2, s2, a2, c2 = e2[2] && function(t2) {
       let e3, n3, o3 = t2[2], r3 = [];
       for (let e4 = 0; e4 < o3.length; e4 += 1)
-        r3[e4] = Le(Ie(t2, o3, e4));
+        r3[e4] = Re(Se(t2, o3, e4));
       return {c() {
         e3 = g("div"), n3 = g("div");
         for (let t3 = 0; t3 < r3.length; t3 += 1)
@@ -1148,8 +1155,8 @@
         if (7 & e4) {
           let i3;
           for (o3 = t3[2], i3 = 0; i3 < o3.length; i3 += 1) {
-            const s3 = Ie(t3, o3, i3);
-            r3[i3] ? r3[i3].p(s3, e4) : (r3[i3] = Le(s3), r3[i3].c(), r3[i3].m(n3, null));
+            const s3 = Se(t3, o3, i3);
+            r3[i3] ? r3[i3].p(s3, e4) : (r3[i3] = Re(s3), r3[i3].c(), r3[i3].m(n3, null));
           }
           for (; i3 < r3.length; i3 += 1)
             r3[i3].d(1);
@@ -1172,19 +1179,19 @@
       t2 && m(n2), c2 && c2.d();
     }};
   }
-  function Fe(t2, e2, n2) {
+  function Ne(t2, e2, n2) {
     let o2, r2;
-    l(t2, Rt, (t3) => n2(0, o2 = t3)), l(t2, Tt, (t3) => n2(1, r2 = t3));
+    l(t2, At, (t3) => n2(0, o2 = t3)), l(t2, Mt, (t3) => n2(1, r2 = t3));
     return [o2, r2, []];
   }
-  class Ne extends Y {
+  class Te extends Y {
     constructor(t2) {
-      super(), X(this, t2, Fe, Se, s, {});
+      super(), X(this, t2, Ne, Fe, s, {});
     }
   }
-  function Re(t2) {
+  function Ae(t2) {
     let e2, n2, o2;
-    e2 = new Ne({});
+    e2 = new Te({});
     const r2 = t2[1].default, i2 = u(r2, t2, t2[0], null);
     return {c() {
       Q(e2.$$.fragment), n2 = y(), i2 && i2.c();
@@ -1200,28 +1207,28 @@
       Z(e2, t3), t3 && m(n2), i2 && i2.d(t3);
     }};
   }
-  function Te(t2, e2, n2) {
+  function Me(t2, e2, n2) {
     let {$$slots: o2 = {}, $$scope: r2} = e2;
     return t2.$$set = (t3) => {
       "$$scope" in t3 && n2(0, r2 = t3.$$scope);
     }, [r2, o2];
   }
-  class Me extends Y {
+  class Ce extends Y {
     constructor(t2) {
-      super(), X(this, t2, Te, Re, s, {});
+      super(), X(this, t2, Me, Ae, s, {});
     }
   }
-  const Ae = {root: true, ownMeta: {preload: "proximity"}, children: [{isFallback: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/_fallback", component: () => ke}, {isIndex: true, isPage: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/index", id: "_index", component: () => je}], isLayout: true, meta: {preload: "proximity", recursive: true, prerender: true}, path: "/", id: "__layout", component: () => Me};
-  const {tree: Ce, routes: qe} = function(t2) {
+  const qe = {root: true, ownMeta: {preload: "proximity"}, children: [{isFallback: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/_fallback", component: () => Ee}, {isIndex: true, isPage: true, meta: {recursive: true, preload: "proximity", prerender: true}, path: "/index", id: "_index", component: () => Ie}], isLayout: true, meta: {preload: "proximity", recursive: true, prerender: true}, path: "/", id: "__layout", component: () => Ce};
+  const {tree: Be, routes: Ue} = function(t2) {
     const e2 = ["restoreDefaults", "setParamKeys", "setRegex", "setShortPath", "setRank", "assignLayout", "setPrototype", "addMetaChildren", "assignRelations", "setIsIndexable", "assignIndex", "assignAPI", "createFlatList"], n2 = {tree: t2, routes: []};
     for (let t3 of e2) {
-      (ve[t3].sync || ve[t3])(n2);
+      (Pe[t3].sync || Pe[t3])(n2);
     }
     return n2;
-  }(Ae);
-  function Be(e2) {
+  }(qe);
+  function He(e2) {
     let n2, o2;
-    return n2 = new Yt({props: {routes: qe}}), {c() {
+    return n2 = new ee({props: {routes: Ue}}), {c() {
       Q(n2.$$.fragment);
     }, m(t2, e3) {
       V(n2, t2, e3), o2 = true;
@@ -1241,7 +1248,7 @@
     i2.style.visibility = "hidden", e2.target.appendChild(i2), r2 ? addEventListener(o2, s2) : s2(), new t2({...e2, target: i2});
   }(class extends Y {
     constructor(t2) {
-      super(), X(this, t2, null, Be, s, {});
+      super(), X(this, t2, null, He, s, {});
     }
   }, {target: document.body}, "routify-app");
 })();
