@@ -1109,7 +1109,7 @@
   function Le(t2, e2, n2) {
     let o2;
     l(t2, Rt, (t3) => n2(3, o2 = t3));
-    const r2 = "http://aducks-api.herokuapp.com";
+    const r2 = "https://aducks-api.herokuapp.com";
     qt.title = "\u0410\u0443\u0442\u044F\u0442\u0430", qt.description = "Description coming soon...";
     let i2 = {};
     return console.log(`api url: ${r2}`), fetch(r2 + "/foo").then((t3) => t3.json()).then((t3) => {
